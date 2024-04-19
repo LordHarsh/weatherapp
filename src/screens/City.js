@@ -8,8 +8,9 @@ import {
   StatusBar,
 } from "react-native";
 import IconText from "../components/IconText";
+import moment from "moment";
 
-const City = () => {
+const City = ({weatherData}) => {
   const {
     cityName,
     cityText,
@@ -22,19 +23,20 @@ const City = () => {
     riseSetWrapper,
     rowLayout,
   } = styles;
+  
   return (
     <SafeAreaView style={container}>
       <ImageBackground
         source={require("../../assets/city-background.jpg")}
         style={styles.image}
       >
-        <Text style={[cityName, cityText]}>London</Text>
-        <Text style={[countryName, cityText]}>UK</Text>
+        <Text style={[cityName, cityText]}>{weatherData.name}</Text>
+        <Text style={[countryName, cityText]}>{weatherData.country}</Text>
         <View style={[populationWrapper, rowLayout]}>
           <IconText
             iconName={"user"}
             iconColor={"red"}
-            bodyText={"8000"}
+            bodyText={weatherData.population}
             bodyTextStyles={populationText}
           />
         </View>
@@ -42,13 +44,13 @@ const City = () => {
           <IconText
             iconName={"sunrise"}
             iconColor={"white"}
-            bodyText={"10:46:38 am"}
+            bodyText={moment(weatherData.sunrise).format("h:mm a")}
             bodyTextStyles={riseSetText}
           />
           <IconText
             iconName={"sunset"}
             iconColor={"white"}
-            bodyText={"18:01:55 pm"}
+            bodyText={moment(weatherData.sunset).format("h:mm a")}
             bodyTextStyles={riseSetText}
           />
         </View>
@@ -59,10 +61,12 @@ const City = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
+    // marginTop: StatusBar.currentHeight || 0,
   },
   image: {
     flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
   cityName: {
     fontSize: 40,
@@ -78,7 +82,7 @@ const styles = StyleSheet.create({
   },
   populationWrapper: {
     justifyContent: "center",
-    marginTop: 20,
+    marginTop: 30,
   },
   populationText: {
     fontSize: 25,
@@ -86,7 +90,8 @@ const styles = StyleSheet.create({
     color: "red",
   },
   riseSetWrapper: {
-    justifyContent: "space-around",
+    gap: 40,
+    justifyContent: "space-between",
     marginTop: 30,
   },
   riseSetText: {
